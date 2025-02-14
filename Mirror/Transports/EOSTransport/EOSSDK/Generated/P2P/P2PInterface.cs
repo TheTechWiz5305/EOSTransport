@@ -202,7 +202,7 @@ namespace Epic.OnlineServices.P2P
 		}
 
 		/// <summary>
-		/// Listen for when a previously opened connection is closed.
+		/// Listen for when a previously accepted connection that was either open or pending is closed.
 		/// <seealso cref="AddNotifyPeerConnectionEstablished" />
 		/// <seealso cref="AddNotifyPeerConnectionInterrupted" />
 		/// <seealso cref="RemoveNotifyPeerConnectionClosed" />
@@ -235,7 +235,7 @@ namespace Epic.OnlineServices.P2P
 		/// <summary>
 		/// Listen for when a connection is established. This is fired when we first connect to a peer, when we reconnect to a peer after a connection interruption,
 		/// and when our underlying network connection type changes (for example, from a direct connection to relay, or vice versa). Network Connection Type changes
-		/// will always be broadcast with a <see cref="ConnectionEstablishedType.Reconnection" /> connection type, even if the connection was not interrupted.
+		/// will always be broadcast with a <see cref="ConnectionEstablishedType.Reconnection" /> connection type, even if the connection was not interrupted. If the network status changes from offline to online, you must call this function again.
 		/// <seealso cref="AddNotifyPeerConnectionInterrupted" />
 		/// <seealso cref="AddNotifyPeerConnectionClosed" />
 		/// <seealso cref="RemoveNotifyPeerConnectionEstablished" />
@@ -301,7 +301,7 @@ namespace Epic.OnlineServices.P2P
 
 		/// <summary>
 		/// Listen for incoming connection requests on a particular Socket ID, or optionally all Socket IDs. The bound function
-		/// will only be called if the connection has not already been accepted.
+		/// will only be called if the connection has not already been accepted. If the network status changes from offline to online, you must call this function again.
 		/// <seealso cref="RemoveNotifyPeerConnectionRequest" />
 		/// </summary>
 		/// <param name="options">Information about who would like notifications, and (optionally) only for a specific socket</param>
@@ -536,48 +536,6 @@ namespace Epic.OnlineServices.P2P
 			Bindings.EOS_P2P_QueryNATType(InnerHandle, ref optionsInternal, clientDataAddress, completionDelegateInternal);
 
 			Helper.Dispose(ref optionsInternal);
-		}
-
-		/// <summary>
-		/// Receive the next packet for the local user, and information associated with this packet, if it exists.
-		/// <seealso cref="GetNextReceivedPacketSize" />
-		/// </summary>
-		/// <param name="options">Information about who is requesting the size of their next packet, and how much data can be stored safely</param>
-		/// <param name="outPeerId">The Remote User who sent data. Only set if there was a packet to receive.</param>
-		/// <param name="outSocketId">The Socket ID of the data that was sent. Only set if there was a packet to receive.</param>
-		/// <param name="outChannel">The channel the data was sent on. Only set if there was a packet to receive.</param>
-		/// <param name="outData">Buffer to store the data being received. Must be at least <see cref="GetNextReceivedPacketSize" /> in length or data will be truncated</param>
-		/// <param name="outBytesWritten">The amount of bytes written to OutData. Only set if there was a packet to receive.</param>
-		/// <returns>
-		/// <see cref="Result.Success" /> - If the packet was received successfully
-		/// <see cref="Result.InvalidParameters" /> - If input was invalid
-		/// <see cref="Result.NotFound" /> - If there are no packets available for the requesting user
-		/// </returns>
-		public Result ReceivePacket(ref ReceivePacketOptions options, out ProductUserId outPeerId, out SocketId outSocketId, out byte outChannel, System.ArraySegment<byte> outData, out uint outBytesWritten)
-		{
-			ReceivePacketOptionsInternal optionsInternal = new ReceivePacketOptionsInternal();
-			optionsInternal.Set(ref options);
-
-			var outPeerIdAddress = System.IntPtr.Zero;
-
-			var outSocketIdInternal = Helper.GetDefault<SocketIdInternal>();
-
-			outChannel = Helper.GetDefault<byte>();
-
-			outBytesWritten = 0;
-			System.IntPtr outDataAddress = Helper.AddPinnedBuffer(outData);
-
-			var funcResult = Bindings.EOS_P2P_ReceivePacket(InnerHandle, ref optionsInternal, ref outPeerIdAddress, ref outSocketIdInternal, ref outChannel, outDataAddress, ref outBytesWritten);
-
-			Helper.Dispose(ref optionsInternal);
-
-			Helper.Get(outPeerIdAddress, out outPeerId);
-
-			Helper.Get(ref outSocketIdInternal, out outSocketId);
-
-			Helper.Dispose(ref outDataAddress);
-
-			return funcResult;
 		}
 
 		/// <summary>

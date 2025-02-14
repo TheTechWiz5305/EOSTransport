@@ -180,6 +180,10 @@ namespace EpicTransport {
                 RequestedChannel = channel
             };
 
+            Helper.Get(System.IntPtr.Zero, out clientProductUserId);
+            var outSocketIdInternal = Helper.GetDefault<SocketIdInternal>();
+            Helper.Get(ref outSocketIdInternal, out socketId);
+
             /* var getNextReceivedPacketSizeOptions = new GetNextReceivedPacketSizeOptions() {
 		        LocalUserId = EOSSDKComponent.LocalUserProductId,
 		        RequestedChannel = channel
@@ -198,8 +202,8 @@ namespace EpicTransport {
             ArraySegment<byte> outData = new(internalReceiveBuffer);
             Result result = p2pInterface.ReceivePacket(
                 ref receivePacketOptions,
-                out clientProductUserId,
-                out socketId,
+                ref clientProductUserId,
+                ref socketId,
                 out channel,
                 outData,
                 out bytesWritten);

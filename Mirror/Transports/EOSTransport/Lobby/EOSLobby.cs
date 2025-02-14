@@ -17,6 +17,8 @@ public class EOSLobby : MonoBehaviour {
     private bool isLobbyOwner = false;
     private List<LobbyDetails> foundLobbies = new List<LobbyDetails>();
     private List<Attribute> lobbyData = new List<Attribute>();
+    HashSet<ProductUserId> listOfBannedPlayers = new HashSet<ProductUserId>();
+
 
     //create lobby events
     public delegate void CreateLobbySuccess(List<Attribute> attributes);
@@ -76,12 +78,21 @@ public class EOSLobby : MonoBehaviour {
     public event LobbyAttributeUpdate LobbyAttributeUpdated;
 
     public virtual void Start() {
-        var addNotifyLobbyMemberStatusReceivedOptions = new AddNotifyLobbyMemberStatusReceivedOptions { };
-        lobbyMemberStatusNotifyId = EOSSDKComponent.GetLobbyInterface().AddNotifyLobbyMemberStatusReceived(ref addNotifyLobbyMemberStatusReceivedOptions, null,
-        (ref LobbyMemberStatusReceivedCallbackInfo callback) => {
-            LobbyMemberStatusUpdated?.Invoke(callback);
+        var options = new AddNotifyLobbyMemberStatusReceivedOptions { };
 
-            if (callback.CurrentStatus == LobbyMemberStatus.Closed) {
+        lobbyMemberStatusNotifyId = EOSSDKComponent.GetLobbyInterface().AddNotifyLobbyMemberStatusReceived(ref options, null, (ref LobbyMemberStatusReceivedCallbackInfo data) => {
+            LobbyMemberStatusUpdated?.Invoke(data);
+
+            // CHeck if player that just joined is on the ban list
+            // if so, kick them out!
+            ProductUserId playerThatJustJoined = data.TargetUserId;
+
+            if (listOfBannedPlayers.Contains(playerThatJustJoined)) {
+                KickMember(playerThatJustJoined, false);
+            }
+
+            // Leave lobby if the lobby has been closed
+            if (data.CurrentStatus == LobbyMemberStatus.Closed) {
                 LeaveLobby();
             }
         });
@@ -468,5 +479,33 @@ public class EOSLobby : MonoBehaviour {
     /// <returns>current lobby id</returns>
     public string GetCurrentLobbyId() {
         return currentLobbyId;
+    }
+
+
+    /// <summary>
+    /// Kicking a player out of lobby
+    /// 
+    /// if isBanning is true, then we add the pid to the HashSet!
+    /// When player joins, check if the HashSet contains their PID.  If so, automatically kick them out then and there
+    /// </summary>
+    public void KickMember(ProductUserId pid, bool isBanning) {
+        if (!isLobbyOwner) { return; } 
+        if (pid == EOSSDKComponent.LocalUserProductId) { return; }
+
+        var options = new KickMemberOptions {
+            LobbyId = currentLobbyId,
+            LocalUserId = EOSSDKComponent.LocalUserProductId,
+            TargetUserId = pid
+        };
+
+        EOSSDKComponent.GetLobbyInterface().KickMember(ref options, null, delegate (ref KickMemberCallbackInfo result) {
+            if (result.ResultCode == Result.Success) {
+                Debug.Log($"Kicked Member {pid.ToString()}");
+
+                if (isBanning) {
+                    listOfBannedPlayers.Add(pid);
+                }
+            }
+        });
     }
 }

@@ -91,7 +91,7 @@ namespace Epic.OnlineServices.Lobby
 		/// <summary>
 		/// The most recent version of the <see cref="CreateLobby" /> API.
 		/// </summary>
-		public const int CreatelobbyApiLatest = 9;
+		public const int CreatelobbyApiLatest = 10;
 
 		/// <summary>
 		/// The most recent version of the <see cref="CreateLobbySearch" /> API.
@@ -146,12 +146,17 @@ namespace Epic.OnlineServices.Lobby
 		/// <summary>
 		/// The most recent version of the <see cref="JoinLobby" /> API.
 		/// </summary>
-		public const int JoinlobbyApiLatest = 4;
+		public const int JoinlobbyApiLatest = 5;
 
 		/// <summary>
 		/// The most recent version of the <see cref="JoinLobbyById" /> API.
 		/// </summary>
-		public const int JoinlobbybyidApiLatest = 2;
+		public const int JoinlobbybyidApiLatest = 3;
+
+		/// <summary>
+		/// The most recent version of the <see cref="JoinRTCRoom" /> API.
+		/// </summary>
+		public const int JoinrtcroomApiLatest = 1;
 
 		/// <summary>
 		/// The most recent version of the <see cref="KickMember" /> API.
@@ -162,6 +167,11 @@ namespace Epic.OnlineServices.Lobby
 		/// The most recent version of the <see cref="LeaveLobby" /> API.
 		/// </summary>
 		public const int LeavelobbyApiLatest = 1;
+
+		/// <summary>
+		/// The most recent version of the <see cref="LeaveRTCRoom" /> API.
+		/// </summary>
+		public const int LeavertcroomApiLatest = 1;
 
 		/// <summary>
 		/// The most recent version of the <see cref="LocalRTCOptions" /> structure.
@@ -244,7 +254,7 @@ namespace Epic.OnlineServices.Lobby
 
 		/// <summary>
 		/// Register to receive notifications about lobby "JOIN" performed by local user (when no invite) via the overlay.
-		/// must call EOS_Lobby_RemoveNotifyJoinLobbyAccepted to remove the notification
+		/// If the returned NotificationId is valid, you must call EOS_Lobby_RemoveNotifyJoinLobbyAccepted when you no longer wish to have your NotificationHandler called.
 		/// </summary>
 		/// <param name="options">Structure containing information about the request.</param>
 		/// <param name="clientData">Arbitrary data that is passed back to you in the CompletionDelegate.</param>
@@ -274,7 +284,7 @@ namespace Epic.OnlineServices.Lobby
 		/// <summary>
 		/// Register to receive notifications about leave lobby requests performed by the local user via the overlay.
 		/// When user requests to leave the lobby in the social overlay, the SDK does not automatically leave the lobby, it is up to the game to perform any necessary cleanup and call the <see cref="LeaveLobby" /> method using the lobbyId sent in the notification function.
-		/// must call EOS_Lobby_RemoveNotifyLeaveLobbyRequested to remove the notification.
+		/// If the returned NotificationId is valid, you must call EOS_Lobby_RemoveNotifyLeaveLobbyRequested when you no longer wish to have your NotificationHandler called.
 		/// </summary>
 		/// <param name="options">Structure containing information about the request.</param>
 		/// <param name="clientData">Arbitrary data that is passed back to you in the CompletionDelegate.</param>
@@ -303,7 +313,7 @@ namespace Epic.OnlineServices.Lobby
 
 		/// <summary>
 		/// Register to receive notifications about lobby invites accepted by local user via the overlay.
-		/// must call RemoveNotifyLobbyInviteAccepted to remove the notification
+		/// If the returned NotificationId is valid, you must call EOS_Lobby_RemoveNotifyLobbyInviteAccepted when you no longer wish to have your NotificationHandler called.
 		/// </summary>
 		/// <param name="options">Structure containing information about the request.</param>
 		/// <param name="clientData">Arbitrary data that is passed back to you in the CompletionDelegate.</param>
@@ -332,7 +342,7 @@ namespace Epic.OnlineServices.Lobby
 
 		/// <summary>
 		/// Register to receive notifications about lobby invites sent to local users.
-		/// must call RemoveNotifyLobbyInviteReceived to remove the notification
+		/// If the returned NotificationId is valid, you must call EOS_Lobby_RemoveNotifyLobbyInviteReceived when you no longer wish to have your NotificationHandler called.
 		/// </summary>
 		/// <param name="options">Structure containing information about the request.</param>
 		/// <param name="clientData">Arbitrary data that is passed back to you in the CompletionDelegate.</param>
@@ -361,7 +371,7 @@ namespace Epic.OnlineServices.Lobby
 
 		/// <summary>
 		/// Register to receive notifications about lobby invites rejected by local user.
-		/// must call RemoveNotifyLobbyInviteRejected to remove the notification
+		/// If the returned NotificationId is valid, you must call EOS_Lobby_RemoveNotifyLobbyInviteRejected when you no longer wish to have your NotificationHandler called.
 		/// </summary>
 		/// <param name="options">Structure containing information about the request.</param>
 		/// <param name="clientData">Arbitrary data that is passed back to you in the CompletionDelegate.</param>
@@ -390,7 +400,7 @@ namespace Epic.OnlineServices.Lobby
 
 		/// <summary>
 		/// Register to receive notifications about the changing status of lobby members.
-		/// must call RemoveNotifyLobbyMemberStatusReceived to remove the notification
+		/// If the returned NotificationId is valid, you must call EOS_Lobby_RemoveNotifyLobbyMemberStatusReceived when you no longer wish to have your NotificationHandler called.
 		/// </summary>
 		/// <param name="options">Structure containing information about the request.</param>
 		/// <param name="clientData">Arbitrary data that is passed back to you in the CompletionDelegate.</param>
@@ -419,7 +429,7 @@ namespace Epic.OnlineServices.Lobby
 
 		/// <summary>
 		/// Register to receive notifications when a lobby member updates the attributes associated with themselves inside the lobby.
-		/// must call RemoveNotifyLobbyMemberUpdateReceived to remove the notification
+		/// If the returned NotificationId is valid, you must call EOS_Lobby_RemoveNotifyLobbyMemberUpdateReceived when you no longer wish to have your NotificationHandler called.
 		/// </summary>
 		/// <param name="options">Structure containing information about the request.</param>
 		/// <param name="clientData">Arbitrary data that is passed back to you in the CompletionDelegate.</param>
@@ -448,7 +458,7 @@ namespace Epic.OnlineServices.Lobby
 
 		/// <summary>
 		/// Register to receive notifications when a lobby owner updates the attributes associated with the lobby.
-		/// must call RemoveNotifyLobbyUpdateReceived to remove the notification
+		/// If the returned NotificationId is valid, you must call EOS_Lobby_RemoveNotifyLobbyUpdateReceived when you no longer wish to have your NotificationHandler called.
 		/// </summary>
 		/// <param name="options">Structure containing information about the request.</param>
 		/// <param name="clientData">Arbitrary data that is passed back to you in the CompletionDelegate.</param>
@@ -521,7 +531,7 @@ namespace Epic.OnlineServices.Lobby
 		/// This is only needed when a configured integrated platform has <see cref="IntegratedPlatform.IntegratedPlatformManagementFlags.DisableSDKManagedSessions" /> set. The EOS SDK will
 		/// then use the state of <see cref="IntegratedPlatform.IntegratedPlatformManagementFlags.PreferEOSIdentity" /> and <see cref="IntegratedPlatform.IntegratedPlatformManagementFlags.PreferIntegratedIdentity" /> to determine when the NotificationFn is
 		/// called.
-		/// must call EOS_Lobby_RemoveNotifySendLobbyNativeInviteRequested to remove the notification.
+		/// If the returned NotificationId is valid, you must call EOS_Lobby_RemoveNotifySendLobbyNativeInviteRequested when you no longer wish to have your NotificationHandler called.
 		/// <seealso cref="IntegratedPlatform.IntegratedPlatformManagementFlags.DisableSDKManagedSessions" />
 		/// <seealso cref="IntegratedPlatform.IntegratedPlatformManagementFlags.PreferEOSIdentity" />
 		/// <seealso cref="IntegratedPlatform.IntegratedPlatformManagementFlags.PreferIntegratedIdentity" />
@@ -969,6 +979,38 @@ namespace Epic.OnlineServices.Lobby
 		}
 
 		/// <summary>
+		/// Joins the RTC room associated with a specific lobby a local user belongs to.
+		/// 
+		/// This function will only succeed when called on a lobby that has the RTC Room feature enabled.
+		/// Clients may check if the RTC Room feature is enabled by inspecting the value of <see cref="LobbyDetailsInfo.RTCRoomEnabled" />.
+		/// </summary>
+		/// <param name="options">Structure containing information about which lobby a local user should join the RTC Room for</param>
+		/// <param name="clientData">Arbitrary data that is passed back to you in the CompletionDelegate</param>
+		/// <param name="completionDelegate">A callback that is fired when the join RTC Room operation completes, either successfully or in error</param>
+		/// <returns>
+		/// <see cref="Result.Success" /> if creation completes succesfully
+		/// <see cref="Result.NotFound" /> if the lobby does not exist
+		/// <see cref="Result.Disabled" /> if the lobby exists, but did not have the RTC Room feature enabled when created
+		/// <see cref="Result.InvalidParameters" /> if you pass a null pointer on invalid length for any of the parameters
+		/// <see cref="Result.NoChange" /> if call does not affect the state of the RTC Room
+		/// <see cref="Result.InvalidState" /> if call to join is made when RTC Room state is not disconnected/disconnecting
+		/// </returns>
+		public void JoinRTCRoom(ref JoinRTCRoomOptions options, object clientData, OnJoinRTCRoomCallback completionDelegate)
+		{
+			JoinRTCRoomOptionsInternal optionsInternal = new JoinRTCRoomOptionsInternal();
+			optionsInternal.Set(ref options);
+
+			var clientDataAddress = System.IntPtr.Zero;
+
+			var completionDelegateInternal = new OnJoinRTCRoomCallbackInternal(OnJoinRTCRoomCallbackInternalImplementation);
+			Helper.AddCallback(out clientDataAddress, clientData, completionDelegate, completionDelegateInternal);
+
+			Bindings.EOS_Lobby_JoinRTCRoom(InnerHandle, ref optionsInternal, clientDataAddress, completionDelegateInternal);
+
+			Helper.Dispose(ref optionsInternal);
+		}
+
+		/// <summary>
 		/// Kick an existing member from the lobby
 		/// </summary>
 		/// <param name="options">Structure containing information about the lobby and member to be kicked</param>
@@ -1020,6 +1062,37 @@ namespace Epic.OnlineServices.Lobby
 			Helper.AddCallback(out clientDataAddress, clientData, completionDelegate, completionDelegateInternal);
 
 			Bindings.EOS_Lobby_LeaveLobby(InnerHandle, ref optionsInternal, clientDataAddress, completionDelegateInternal);
+
+			Helper.Dispose(ref optionsInternal);
+		}
+
+		/// <summary>
+		/// Leaves the RTC room associated with a specific lobby a local user belongs to.
+		/// 
+		/// This function will only succeed when called on a lobby that has the RTC Room feature enabled.
+		/// Clients may check if the RTC Room feature is enabled by inspecting the value of <see cref="LobbyDetailsInfo.RTCRoomEnabled" />.
+		/// </summary>
+		/// <param name="options">Structure containing information about which lobby a local user should leave the RTC Room for</param>
+		/// <param name="clientData">Arbitrary data that is passed back to you in the CompletionDelegate</param>
+		/// <param name="completionDelegate">A callback that is fired when the join RTC Room operation completes, either successfully or in error</param>
+		/// <returns>
+		/// <see cref="Result.Success" /> if creation completes succesfully
+		/// <see cref="Result.NotFound" /> if the lobby does not exist
+		/// <see cref="Result.Disabled" /> if the lobby exists, but did not have the RTC Room feature enabled when created
+		/// <see cref="Result.InvalidParameters" /> if you pass a null pointer on invalid length for any of the parameters
+		/// <see cref="Result.NoChange" /> if call does not affect the state of the RTC Room
+		/// </returns>
+		public void LeaveRTCRoom(ref LeaveRTCRoomOptions options, object clientData, OnLeaveRTCRoomCallback completionDelegate)
+		{
+			LeaveRTCRoomOptionsInternal optionsInternal = new LeaveRTCRoomOptionsInternal();
+			optionsInternal.Set(ref options);
+
+			var clientDataAddress = System.IntPtr.Zero;
+
+			var completionDelegateInternal = new OnLeaveRTCRoomCallbackInternal(OnLeaveRTCRoomCallbackInternalImplementation);
+			Helper.AddCallback(out clientDataAddress, clientData, completionDelegate, completionDelegateInternal);
+
+			Bindings.EOS_Lobby_LeaveRTCRoom(InnerHandle, ref optionsInternal, clientDataAddress, completionDelegateInternal);
 
 			Helper.Dispose(ref optionsInternal);
 		}
@@ -1390,6 +1463,17 @@ namespace Epic.OnlineServices.Lobby
 			}
 		}
 
+		[MonoPInvokeCallback(typeof(OnJoinRTCRoomCallbackInternal))]
+		internal static void OnJoinRTCRoomCallbackInternalImplementation(ref JoinRTCRoomCallbackInfoInternal data)
+		{
+			OnJoinRTCRoomCallback callback;
+			JoinRTCRoomCallbackInfo callbackInfo;
+			if (Helper.TryGetAndRemoveCallback(ref data, out callback, out callbackInfo))
+			{
+				callback(ref callbackInfo);
+			}
+		}
+
 		[MonoPInvokeCallback(typeof(OnKickMemberCallbackInternal))]
 		internal static void OnKickMemberCallbackInternalImplementation(ref KickMemberCallbackInfoInternal data)
 		{
@@ -1418,6 +1502,17 @@ namespace Epic.OnlineServices.Lobby
 			OnLeaveLobbyRequestedCallback callback;
 			LeaveLobbyRequestedCallbackInfo callbackInfo;
 			if (Helper.TryGetCallback(ref data, out callback, out callbackInfo))
+			{
+				callback(ref callbackInfo);
+			}
+		}
+
+		[MonoPInvokeCallback(typeof(OnLeaveRTCRoomCallbackInternal))]
+		internal static void OnLeaveRTCRoomCallbackInternalImplementation(ref LeaveRTCRoomCallbackInfoInternal data)
+		{
+			OnLeaveRTCRoomCallback callback;
+			LeaveRTCRoomCallbackInfo callbackInfo;
+			if (Helper.TryGetAndRemoveCallback(ref data, out callback, out callbackInfo))
 			{
 				callback(ref callbackInfo);
 			}

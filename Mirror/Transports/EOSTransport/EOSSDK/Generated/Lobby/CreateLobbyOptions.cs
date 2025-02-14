@@ -95,7 +95,7 @@ namespace Epic.OnlineServices.Lobby
 
 		/// <summary>
 		/// Array of platform IDs indicating the player platforms allowed to register with the session. Platform IDs are
-		/// found in the EOS header file, e.g. <see cref="Common.OptEpic" />. For some platforms, the value will be in the EOS Platform specific
+		/// found in the EOS header file, e.g. <see cref="Types.OnlinePlatform.OptEpic" />. For some platforms, the value will be in the EOS Platform specific
 		/// header file. If null, the lobby will be unrestricted.
 		/// </summary>
 		public uint[] AllowedPlatformIds { get; set; }
@@ -106,6 +106,12 @@ namespace Epic.OnlineServices.Lobby
 		/// the platform of the lobby owner.
 		/// </summary>
 		public bool CrossplayOptOut { get; set; }
+
+		/// <summary>
+		/// If bEnableRTCRoom is true, this value indicates the action to take against the RTC Room when joining the lobby. This may be used
+		/// to indicate the RTCRoom should be joined immediately or manually at a later time.
+		/// </summary>
+		public LobbyRTCRoomJoinActionType RTCRoomJoinActionType { get; set; }
 	}
 
 	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 8)]
@@ -127,6 +133,7 @@ namespace Epic.OnlineServices.Lobby
 		private System.IntPtr m_AllowedPlatformIds;
 		private uint m_AllowedPlatformIdsCount;
 		private int m_CrossplayOptOut;
+		private LobbyRTCRoomJoinActionType m_RTCRoomJoinActionType;
 
 		public ProductUserId LocalUserId
 		{
@@ -240,6 +247,14 @@ namespace Epic.OnlineServices.Lobby
 			}
 		}
 
+		public LobbyRTCRoomJoinActionType RTCRoomJoinActionType
+		{
+			set
+			{
+				m_RTCRoomJoinActionType = value;
+			}
+		}
+
 		public void Set(ref CreateLobbyOptions other)
 		{
 			m_ApiVersion = LobbyInterface.CreatelobbyApiLatest;
@@ -257,6 +272,7 @@ namespace Epic.OnlineServices.Lobby
 			RejoinAfterKickRequiresInvite = other.RejoinAfterKickRequiresInvite;
 			AllowedPlatformIds = other.AllowedPlatformIds;
 			CrossplayOptOut = other.CrossplayOptOut;
+			RTCRoomJoinActionType = other.RTCRoomJoinActionType;
 		}
 
 		public void Set(ref CreateLobbyOptions? other)
@@ -278,6 +294,7 @@ namespace Epic.OnlineServices.Lobby
 				RejoinAfterKickRequiresInvite = other.Value.RejoinAfterKickRequiresInvite;
 				AllowedPlatformIds = other.Value.AllowedPlatformIds;
 				CrossplayOptOut = other.Value.CrossplayOptOut;
+				RTCRoomJoinActionType = other.Value.RTCRoomJoinActionType;
 			}
 		}
 

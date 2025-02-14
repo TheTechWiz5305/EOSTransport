@@ -32,6 +32,16 @@ namespace Epic.OnlineServices.AntiCheatClient
 		public const int GetprotectmessageoutputlengthApiLatest = 1;
 
 		/// <summary>
+		/// Maximum size of an individual message provided through <see cref="OnMessageToPeerCallback" />.
+		/// </summary>
+		public const int OnmessagetopeercallbackMaxMessageSize = 512;
+
+		/// <summary>
+		/// Maximum size of an individual message provided through <see cref="OnMessageToServerCallback" />.
+		/// </summary>
+		public const int OnmessagetoservercallbackMaxMessageSize = 512;
+
+		/// <summary>
 		/// A special peer handle that represents the client itself.
 		/// It does not need to be registered or unregistered and is
 		/// used in OnPeerActionRequiredCallback to quickly signal to the user
@@ -58,6 +68,8 @@ namespace Epic.OnlineServices.AntiCheatClient
 		/// Limits on RegisterTimeoutSeconds parameter
 		/// </summary>
 		public const int RegisterpeerMinAuthenticationtimeout = 40;
+
+		public const int Reserved01ApiLatest = 1;
 
 		public const int UnprotectmessageApiLatest = 1;
 
@@ -515,6 +527,28 @@ namespace Epic.OnlineServices.AntiCheatClient
 			Bindings.EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChanged(InnerHandle, notificationId);
 
 			Helper.RemoveCallbackByNotificationId(notificationId);
+		}
+
+		/// <summary>
+		/// This function is reserved for future use and must not be called.
+		/// </summary>
+		/// <param name="options">Structure containing input data.</param>
+		/// <param name="outValue">Reserved.</param>
+		/// <returns>
+		/// <see cref="Result.NotImplemented" /> - Always
+		/// </returns>
+		public Result Reserved01(ref Reserved01Options options, out int outValue)
+		{
+			Reserved01OptionsInternal optionsInternal = new Reserved01OptionsInternal();
+			optionsInternal.Set(ref options);
+
+			outValue = Helper.GetDefault<int>();
+
+			var funcResult = Bindings.EOS_AntiCheatClient_Reserved01(InnerHandle, ref optionsInternal, ref outValue);
+
+			Helper.Dispose(ref optionsInternal);
+
+			return funcResult;
 		}
 
 		/// <summary>

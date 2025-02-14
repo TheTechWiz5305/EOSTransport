@@ -144,7 +144,7 @@ namespace Epic.OnlineServices.Achievements
 		/// DEPRECATED! Use <see cref="AddNotifyAchievementsUnlockedV2" /> instead.
 		/// 
 		/// Register to receive achievement unlocked notifications.
-		/// must call EOS_Achievements_RemoveNotifyAchievementsUnlocked to remove the notification
+		/// If the returned NotificationId is valid, you must call EOS_Achievements_RemoveNotifyAchievementsUnlocked when you no longer wish to have your NotificationHandler called.
 		/// <seealso cref="RemoveNotifyAchievementsUnlocked" />
 		/// </summary>
 		/// <param name="options">Structure containing information about the achievement unlocked notification</param>
@@ -174,7 +174,7 @@ namespace Epic.OnlineServices.Achievements
 
 		/// <summary>
 		/// Register to receive achievement unlocked notifications.
-		/// must call EOS_Achievements_RemoveNotifyAchievementsUnlocked to remove the notification
+		/// If the returned NotificationId is valid, you must call EOS_Achievements_RemoveNotifyAchievementsUnlocked when you no longer wish to have your NotificationHandler called.
 		/// <seealso cref="RemoveNotifyAchievementsUnlocked" />
 		/// </summary>
 		/// <param name="options">Structure containing information about the achievement unlocked notification</param>
@@ -554,6 +554,7 @@ namespace Epic.OnlineServices.Achievements
 
 		/// <summary>
 		/// Query for a list of achievements for a specific player, including progress towards completion for each achievement.
+		/// Note: By default, this query will not return locked hidden achievements. To return all achievements, call <see cref="QueryDefinitions" /> first.
 		/// When the Social Overlay is enabled then this will be called automatically. The Social Overlay is enabled by default (see EOS_PF_DISABLE_SOCIAL_OVERLAY).
 		/// </summary>
 		/// <param name="options">Structure containing information about the player whose achievements we're retrieving.</param>
