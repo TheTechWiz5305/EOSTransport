@@ -7,8 +7,14 @@ using UnityEngine;
 namespace EpicTransport {
     public static class Logger {
 
-        public static void EpicDebugLog(LogMessage message) {
-            switch (message.Level) {
+        public static void EpicDebugLog(LogMessage message) 
+        {
+            switch (message.Level)
+            {
+                //annoying error that happens every time you open the game in the Editor or move a window in the Editor. 
+                //not needed, so we can just remove it.
+                if (message.Message.Contains("Failed to subclass window")) return;
+                    
                 case LogLevel.Info:
                     Debug.Log($"Epic Manager: Category - {message.Category} Message - {message.Message}");
                     break;
