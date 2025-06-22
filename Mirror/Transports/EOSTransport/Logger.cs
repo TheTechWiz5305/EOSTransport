@@ -8,6 +8,10 @@ namespace EpicTransport {
     public static class Logger {
 
         public static void EpicDebugLog(LogMessage message) {
+            //annoying error that happens every time you open the game in the Editor or move a window in the Editor. 
+            //not needed, so we can just remove it.
+            if (message.Message.ToString().Contains("Failed to subclass window")) return;
+
             switch (message.Level) {
                 case LogLevel.Info:
                     Debug.Log($"Epic Manager: Category - {message.Category} Message - {message.Message}");
