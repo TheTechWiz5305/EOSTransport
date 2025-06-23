@@ -537,19 +537,7 @@ namespace Epic.OnlineServices.AntiCheatClient
 		/// <returns>
 		/// <see cref="Result.NotImplemented" /> - Always
 		/// </returns>
-		public Result Reserved01(ref Reserved01Options options, out int outValue)
-		{
-			Reserved01OptionsInternal optionsInternal = new Reserved01OptionsInternal();
-			optionsInternal.Set(ref options);
-
-			outValue = Helper.GetDefault<int>();
-
-			var funcResult = Bindings.EOS_AntiCheatClient_Reserved01(InnerHandle, ref optionsInternal, ref outValue);
-
-			Helper.Dispose(ref optionsInternal);
-
-			return funcResult;
-		}
+		
 
 		/// <summary>
 		/// Optional NetProtect feature for game message encryption.

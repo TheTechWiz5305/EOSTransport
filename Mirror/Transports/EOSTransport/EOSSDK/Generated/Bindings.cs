@@ -51,7 +51,7 @@
 	#if EOS_PLATFORM_WINDOWS_32
 		#define EOS_DYNAMIC_BINDINGS_NAME_TYPE3
 	#elif EOS_PLATFORM_OSX
-		//#define EOS_DYNAMIC_BINDINGS_NAME_TYPE2
+		// #define EOS_DYNAMIC_BINDINGS_NAME_TYPE2
 		#define EOS_DYNAMIC_BINDINGS_NAME_TYPE1
 	#else
 		#define EOS_DYNAMIC_BINDINGS_NAME_TYPE1
@@ -111,7 +111,6 @@ namespace Epic.OnlineServices
 		private const string EOS_AntiCheatClient_RemoveNotifyMessageToServerName = "EOS_AntiCheatClient_RemoveNotifyMessageToServer";
 		private const string EOS_AntiCheatClient_RemoveNotifyPeerActionRequiredName = "EOS_AntiCheatClient_RemoveNotifyPeerActionRequired";
 		private const string EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChangedName = "EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChanged";
-		private const string EOS_AntiCheatClient_Reserved01Name = "EOS_AntiCheatClient_Reserved01";
 		private const string EOS_AntiCheatClient_UnprotectMessageName = "EOS_AntiCheatClient_UnprotectMessage";
 		private const string EOS_AntiCheatClient_UnregisterPeerName = "EOS_AntiCheatClient_UnregisterPeer";
 		private const string EOS_AntiCheatServer_AddNotifyClientActionRequiredName = "EOS_AntiCheatServer_AddNotifyClientActionRequired";
@@ -740,7 +739,6 @@ namespace Epic.OnlineServices
 		private const string EOS_AntiCheatClient_RemoveNotifyMessageToServerName = "_EOS_AntiCheatClient_RemoveNotifyMessageToServer";
 		private const string EOS_AntiCheatClient_RemoveNotifyPeerActionRequiredName = "_EOS_AntiCheatClient_RemoveNotifyPeerActionRequired";
 		private const string EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChangedName = "_EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChanged";
-		private const string EOS_AntiCheatClient_Reserved01Name = "_EOS_AntiCheatClient_Reserved01";
 		private const string EOS_AntiCheatClient_UnprotectMessageName = "_EOS_AntiCheatClient_UnprotectMessage";
 		private const string EOS_AntiCheatClient_UnregisterPeerName = "_EOS_AntiCheatClient_UnregisterPeer";
 		private const string EOS_AntiCheatServer_AddNotifyClientActionRequiredName = "_EOS_AntiCheatServer_AddNotifyClientActionRequired";
@@ -1369,7 +1367,6 @@ namespace Epic.OnlineServices
 		private const string EOS_AntiCheatClient_RemoveNotifyMessageToServerName = "_EOS_AntiCheatClient_RemoveNotifyMessageToServer@12";
 		private const string EOS_AntiCheatClient_RemoveNotifyPeerActionRequiredName = "_EOS_AntiCheatClient_RemoveNotifyPeerActionRequired@12";
 		private const string EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChangedName = "_EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChanged@12";
-		private const string EOS_AntiCheatClient_Reserved01Name = "_EOS_AntiCheatClient_Reserved01@12";
 		private const string EOS_AntiCheatClient_UnprotectMessageName = "_EOS_AntiCheatClient_UnprotectMessage@16";
 		private const string EOS_AntiCheatClient_UnregisterPeerName = "_EOS_AntiCheatClient_UnregisterPeer@8";
 		private const string EOS_AntiCheatServer_AddNotifyClientActionRequiredName = "_EOS_AntiCheatServer_AddNotifyClientActionRequired@16";
@@ -2141,10 +2138,6 @@ namespace Epic.OnlineServices
 			functionPointer = getFunctionPointer(libraryHandle, EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChangedName);
 			if (functionPointer == System.IntPtr.Zero) throw new DynamicBindingException(EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChangedName);
 			EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChanged = (EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChangedDelegate)Marshal.GetDelegateForFunctionPointer(functionPointer, typeof(EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChangedDelegate));
-
-			//functionPointer = getFunctionPointer(libraryHandle, EOS_AntiCheatClient_Reserved01Name);
-			//if (functionPointer == System.IntPtr.Zero) throw new DynamicBindingException(EOS_AntiCheatClient_Reserved01Name);
-			//EOS_AntiCheatClient_Reserved01 = (EOS_AntiCheatClient_Reserved01Delegate)Marshal.GetDelegateForFunctionPointer(functionPointer, typeof(EOS_AntiCheatClient_Reserved01Delegate));
 
 			functionPointer = getFunctionPointer(libraryHandle, EOS_AntiCheatClient_UnprotectMessageName);
 			if (functionPointer == System.IntPtr.Zero) throw new DynamicBindingException(EOS_AntiCheatClient_UnprotectMessageName);
@@ -4519,7 +4512,6 @@ namespace Epic.OnlineServices
 			EOS_AntiCheatClient_RemoveNotifyMessageToServer = null;
 			EOS_AntiCheatClient_RemoveNotifyPeerActionRequired = null;
 			EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChanged = null;
-			EOS_AntiCheatClient_Reserved01 = null;
 			EOS_AntiCheatClient_UnprotectMessage = null;
 			EOS_AntiCheatClient_UnregisterPeer = null;
 			EOS_AntiCheatServer_AddNotifyClientActionRequired = null;
@@ -5283,10 +5275,6 @@ namespace Epic.OnlineServices
 		[UnmanagedFunctionPointer(Config.LibraryCallingConvention)]
 		internal delegate void EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChangedDelegate(System.IntPtr handle, ulong notificationId);
 		internal static EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChangedDelegate EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChanged;
-
-		[UnmanagedFunctionPointer(Config.LibraryCallingConvention)]
-		internal delegate Result EOS_AntiCheatClient_Reserved01Delegate(System.IntPtr handle, ref AntiCheatClient.Reserved01OptionsInternal options, ref int outValue);
-		internal static EOS_AntiCheatClient_Reserved01Delegate EOS_AntiCheatClient_Reserved01;
 
 		[UnmanagedFunctionPointer(Config.LibraryCallingConvention)]
 		internal delegate Result EOS_AntiCheatClient_UnprotectMessageDelegate(System.IntPtr handle, ref AntiCheatClient.UnprotectMessageOptionsInternal options, System.IntPtr outBuffer, ref uint outBytesWritten);
@@ -7742,9 +7730,6 @@ namespace Epic.OnlineServices
 
 		[DllImport(Config.LibraryName)]
 		internal static extern void EOS_AntiCheatClient_RemoveNotifyPeerAuthStatusChanged(System.IntPtr handle, ulong notificationId);
-
-		[DllImport(Config.LibraryName)]
-		internal static extern Result EOS_AntiCheatClient_Reserved01(System.IntPtr handle, ref AntiCheatClient.Reserved01OptionsInternal options, ref int outValue);
 
 		[DllImport(Config.LibraryName)]
 		internal static extern Result EOS_AntiCheatClient_UnprotectMessage(System.IntPtr handle, ref AntiCheatClient.UnprotectMessageOptionsInternal options, System.IntPtr outBuffer, ref uint outBytesWritten);
