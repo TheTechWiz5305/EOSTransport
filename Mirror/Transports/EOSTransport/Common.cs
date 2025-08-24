@@ -70,7 +70,7 @@ namespace EpicTransport {
             incomingPackets = new Dictionary<PacketKey, List<List<Packet>>>();
 
             this.transport = transport;
-            internalReceiveBuffer = new byte[P2PInterface.MaxPacketSize];
+            internalReceiveBuffer = new byte[P2PInterface.MAX_PACKET_SIZE];
 
         }
 
@@ -176,12 +176,12 @@ namespace EpicTransport {
         private bool Receive(out ProductUserId clientProductUserId, out SocketId socketId, out ArraySegment<byte> receiveBuffer, byte channel) {
             var receivePacketOptions = new ReceivePacketOptions() {
                 LocalUserId = EOSSDKComponent.LocalUserProductId,
-                MaxDataSizeBytes = P2PInterface.MaxPacketSize,
+                MaxDataSizeBytes = P2PInterface.MAX_PACKET_SIZE,
                 RequestedChannel = channel
             };
 
             Helper.Get(System.IntPtr.Zero, out clientProductUserId);
-            var outSocketIdInternal = Helper.GetDefault<SocketIdInternal>();
+            var outSocketIdInternal = default(SocketIdInternal);
             Helper.Get(ref outSocketIdInternal, out socketId);
 
             /* var getNextReceivedPacketSizeOptions = new GetNextReceivedPacketSizeOptions() {
