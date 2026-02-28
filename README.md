@@ -1,3 +1,5 @@
+# THIS FORK IS NO LONGER ACTIVE, SEE [HERE](https://github.com/CodedImmersions/EOSTransport) FOR THE LATEST EOSTRANSPORT
+------------------------------------
 # EOSTransport for Mirror
 Hello all!
 
